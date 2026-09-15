@@ -9,7 +9,7 @@ GODOT="${GODOT:-godot4}"
 [ -x "$GODOT" ] || GODOT="$(command -v godot4 || command -v godot || true)"
 [ -n "$GODOT" ] || { echo "Godot не найден: GODOT=/путь/до/godot"; exit 2; }
 cd "$PROJ" || exit 2
-TESTS="ballistics movement bench assets play_session menu_runtime audio_refs net_stub"
+TESTS="ballistics movement bench assets play_session menu_runtime audio_refs net_stub doors"
 fail=0
 for t in $TESTS; do
     out=$(timeout 600 "$GODOT" --headless --path . -s "tests/test_$t.gd" 2>&1)

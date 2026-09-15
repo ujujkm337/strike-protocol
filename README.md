@@ -1,28 +1,55 @@
 # Strike Protocol — Godot 4.7.2 competitive FPS
 
-## Быстрый старт на Windows (3 шага)
-1. **Godot** — не устанавливается, это один .exe (~50 МБ):
-   `https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_win64.exe`
-   Положить **в папку проекта** (рядом с `project.godot`) ИЛИ `winget install GodotEngine.Godot`.
-2. **`setup.bat`** — двойным кликом. Проверит Godot и поставит python-dotenv (нужен только для генерации ассетов).
-3. **`run_bench.bat`** — карта-полигон. Или откройте `project.godot` и **F5** (запустится меню).
-   Управление: WASD / мышь / ЛКМ огонь / R перезарядка / Ctrl присед / Esc курсор.
+## Играть прямо сейчас (без установки Godot)
 
-Тесты без монитора: **`test_all.bat`** (6 сюит, `godot --headless -s`).
-`GODOT_PATH` — если .exe лежит в другом месте, пути с пробелами поддерживаются.
-`.env` в архив НЕ включён: скопируйте `.env.example` → `.env`, chmod не нужен на Windows.
+Сборки лежат в релизах: **https://github.com/ujujkm337/strike-protocol/releases**
 
+| Архив | Что делать |
+|---|---|
+| `strike-protocol-windows.zip` | распаковать → двойной клик `strike_protocol.exe`. Ни движка, ни установщика не нужно |
+| `strike-protocol-web.zip` | распаковать → `serve.bat` (или `python3 serve.py`) → http://127.0.0.1:8060 |
+| `strike-protocol-godot.zip` | исходники: открыть `project.godot` в Godot 4.7.2 и F5 |
+
+`file://` для веб-сборки не работает (браузер не грузит `.wasm` без http + нужны
+COOP/COEP), поэтому и нужен `serve.py` — он отдаёт правильные заголовки и `Range/206`.
+
+**Управление:** WASD · Shift бег · Ctrl присед · Space прыжок · ЛКМ огонь · ПКМ прицел ·
+R перезарядка · колесо смена оружия · Esc отпустить мышь/пауза · Tab табло ·
+**F3** — оверлей (рендерер, fps, позиция, сцена).
+
+**Если что-то не так:** `strike_protocol.exe --safe` (гасит SDFGI/SSR/volumetric/glow,
+оставляет одну теневую карту) или `--high` (форсирует максимум). В веб-сборке
+аргументы недоступны — кнопка «ГРАФИКА» в главном меню.
+
+
+## Собрать самому (нужен Godot 4.7.2 + экспортные шаблоны)
+
+```bash
+GODOT=/path/to/godot ./tools/export_all.sh          # → build/windows/*.exe, build/web/, два zip
+GODOT=/path/to/godot ./tools/run_tests.sh           # все проверки + живой прогон физики
+LIVE=0 GODOT=… ./tools/run_tests.sh                 # только юнит-проверки
+```
+Windows: `setup.bat` (ищет/ставит Godot) → `run_bench.bat` → `test_all.bat`.
+`.env` в архив не входит: скопируйте `.env.example` → `.env` (нужен только для
+генерации ассетов через API, для игры не нужен).
 
 ## Что проверено движком (не «должно скомпилироваться», а прогнано)
 ```
-движок          Godot 4.7.2-stable.official.ed1daf0bf (headless)
-парсер .gd      11/11 без ошибок
-тесты баллистики   godot --headless -s tests/test_ballistics.gd  → 27 passed, 0 failed
-тесты движения     godot --headless -s tests/test_movement.gd    → 22 passed, 0 failed
-Python-зеркало     python3 tests/test_ballistics.py              → 37 passed, 0 failed
-импорт проекта     --headless --import → 0 ошибок (главная сцена резолвится)
-вес               8.5 МБ без .godot (в лимит снэпшота 128 МБ)
+движок            Godot 4.7.2-stable.official.ed1daf0bf (headless)
+раннер            ./tools/run_tests.sh → 8 сюжетов зелёные
+  ballistics 27/0 · movement 22/0 · bench PASS · assets PASS · play_session PASS
+  menu_runtime PASS · audio_refs PASS (21 ссылка на звук) · net_stub PASS
+живой прогон      ./tools/run_live.sh → физика шагает по-настоящему:
+  опора (зазор -0.001), глаза 2.72 при поле 1.00, спавн лицом к центру (dot 0.95),
+  HUD «AK-47 30/90», 5.10 м за 45 кадров WASD, шаги -> step_concrete_l.mp3,
+  присед 2.72 -> 1.90, SCRIPT ERROR: 0
+экспорт           --export-release Windows + Web → rc=0; самовалидация: PE/x64/GUI,
+                  встроенный pck (GDPC), wasm-магия 0061736d, zip целостный
+Python-зеркало    python3 tests/test_ballistics.py → 37 passed, 0 failed
+вес проекта       8.3 МБ без .godot
 ```
+Что НЕ проверяется здесь и проверяется только у вас: запуск `.exe` на Windows и
+картинка в браузере (нет GPU/сессии).
 
 ## Активы: реально сгенерированы и лежат в проекте
 **Звук — 43 файла** (`assets/audio/fx/*.mp3`, ElevenLabs `POST /v1/sound-generation`):

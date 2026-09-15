@@ -8,6 +8,8 @@ extends Node3D
 @export var stay_open := false
 
 var _bodies: Array[Node] = []
+var _sound: AudioStreamPlayer3D = null
+var _was_open := false
 var _since_player_left := -1.0
 
 
@@ -15,6 +17,7 @@ func _ready() -> void:
 	for c in get_children():
 		if c.is_in_group("door"):
 			_bodies.append(c)
+	_sound = get_node_or_null("DoorSound") as AudioStreamPlayer3D
 	if _bodies.is_empty():
 		push_warning("door.gd: под контроллером нет детей в группе 'door' — дверь нечем двигать")
 
@@ -40,6 +43,12 @@ func _set_all(v: bool) -> void:
 	for b in _bodies:
 		if b.has_method("set_open"):
 			b.set_open(v)
+	if v != _was_open:
+		_was_open = v
+		if _sound and _sound.stream != null:
+			# один сэмп на цикл «открыть/закрыть», как в исходном паке
+			_sound.pitch_scale = 1.0 if v else 0.92
+			_sound.play()
 
 
 func toggle() -> void:
