@@ -1,8 +1,8 @@
 [gd_scene load_steps=31 format=3]
 [ext_resource path="res://scripts/player/fps_controller.gd" type="Script" id="90"]
 [ext_resource path="res://scripts/player/weapon.gd" type="Script" id="91"]
-[ext_resource path="res://scenes/ui/hud.tscn" type="PackedScene" id="92"]
 [ext_resource path="res://scenes/world_environment.tscn" type="PackedScene" id="99"]
+[ext_resource path="res://scenes/ui/hud.tscn" type="PackedScene" id="92"]
 [ext_resource path="res://addons/quaternius-modular-scifi-pack/map/bodies/column_1.tscn" type="PackedScene" id="1"]
 [ext_resource path="res://addons/quaternius-modular-scifi-pack/map/bodies/door_double_wall_side_b.tscn" type="PackedScene" id="2"]
 [ext_resource path="res://addons/quaternius-modular-scifi-pack/map/bodies/column_2.tscn" type="PackedScene" id="3"]
@@ -31,7 +31,7 @@ subdivide_width = 8
 subdivide_depth = 8
 
 [sub_resource type="BoxShape3D" id="floor_shape"]
-extents = Vector3(22.0, 0.05, 14.0)
+extents = Vector3(22.0, 1.0, 14.0)
 
 [sub_resource type="CapsuleShape3D" id="player_cap"]
 radius = 0.35
@@ -57,15 +57,19 @@ shape = SubResource("floor_shape")
 [node name="Sun" type="DirectionalLight3D" parent="Lights"]
 transform = Transform3D(0.86, 0, 0.5, 0.43, 0.5, -0.74, -0.25, 0.75, 0.6, 0, 14, 0)
 shadow_enabled = true
-directional_shadow_max_distance = 140.0
+directional_shadow_max_distance = 80.0
 
 [node name="Lamp0" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 5.4, -7)
 light_color = Color(1, 0.82, 0.6, 1)
 light_energy = 2.6
 omni_attenuation = 1.6
-omni_range = 15.0
+omni_range = 12.0
 shadow_enabled = true
+# atlas-size задаётся в project.godot
+distance_fade_enabled = true
+distance_fade_begin = 28.0
+distance_fade_length = 10.0
 volume_enabled = true
 volume_albedo = Color(0.7, 0.76, 0.86, 1)
 
@@ -74,9 +78,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 5.4, -7)
 light_color = Color(1, 0.86, 0.6, 1)
 light_energy = 3.0
 omni_attenuation = 1.6
-omni_range = 15.0
-shadow_enabled = true
-volume_enabled = true
+omni_range = 12.0
+shadow_enabled = false
+# atlas-size задаётся в project.godot
+distance_fade_enabled = true
+distance_fade_begin = 28.0
+distance_fade_length = 10.0
+volume_enabled = false
 volume_albedo = Color(0.7, 0.76, 0.86, 1)
 
 [node name="Lamp2" type="OmniLight3D" parent="Lights"]
@@ -84,9 +92,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 5.4, 7)
 light_color = Color(1, 0.9, 0.6, 1)
 light_energy = 2.6
 omni_attenuation = 1.6
-omni_range = 15.0
-shadow_enabled = true
-volume_enabled = true
+omni_range = 12.0
+shadow_enabled = false
+# atlas-size задаётся в project.godot
+distance_fade_enabled = true
+distance_fade_begin = 28.0
+distance_fade_length = 10.0
+volume_enabled = false
 volume_albedo = Color(0.7, 0.76, 0.86, 1)
 
 [node name="Lamp3" type="OmniLight3D" parent="Lights"]
@@ -94,9 +106,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 5.4, 7)
 light_color = Color(1, 0.82, 0.6, 1)
 light_energy = 3.0
 omni_attenuation = 1.6
-omni_range = 15.0
-shadow_enabled = true
-volume_enabled = true
+omni_range = 12.0
+shadow_enabled = false
+# atlas-size задаётся в project.godot
+distance_fade_enabled = true
+distance_fade_begin = 28.0
+distance_fade_length = 10.0
+volume_enabled = false
 volume_albedo = Color(0.7, 0.76, 0.86, 1)
 
 [node name="Lamp4" type="OmniLight3D" parent="Lights"]
@@ -104,9 +120,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.0, 0)
 light_color = Color(1, 0.86, 0.6, 1)
 light_energy = 2.6
 omni_attenuation = 1.6
-omni_range = 15.0
-shadow_enabled = true
-volume_enabled = true
+omni_range = 12.0
+shadow_enabled = false
+# atlas-size задаётся в project.godot
+distance_fade_enabled = true
+distance_fade_begin = 28.0
+distance_fade_length = 10.0
+volume_enabled = false
 volume_albedo = Color(0.7, 0.76, 0.86, 1)
 
 [node name="Geometry" type="Node3D" parent="."]
@@ -276,14 +296,14 @@ transform = Transform3D(-4e-06, 0, -1.0, 0, 1, 0, 1.0, 0, -4e-06, 9, 0, 0)
 [node name="Player" type="CharacterBody3D" parent="." groups=["player"]]
 script = ExtResource("90")
 spawn_path = NodePath("../SpawnCT")
-transform = Transform3D(0.70711, 0, -0.70711, 0, 1, 0, -0.70711, 0, 0.70711, -16, 1.2, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1.2, -8)
 
 [node name="Stand" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("player_cap")
 
 [node name="Crouch" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("player_crouch")
 disabled = true
 
@@ -301,9 +321,9 @@ camera = NodePath("..")
 player_body = NodePath("../../..")
 
 [node name="SpawnCT" type="Marker3D" parent="."]
-transform = Transform3D(0.70711, 0, -0.70711, 0, 1, 0, -0.70711, 0, 0.70711, -16, 1.2, -8)
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -16, 1.2, -8)
 
 [node name="SpawnT" type="Marker3D" parent="."]
-transform = Transform3D(-0.70711, 0, 0.70711, 0, 1, 0, 0.70711, 0, -0.70711, 16, 1.2, 8)
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 16, 1.2, 8)
 
 [node name="HUD" parent="." instance=ExtResource("92")]

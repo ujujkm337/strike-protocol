@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmenu0strike00"]
+[gd_scene load_steps=7 format=3 uid="uid://cmenu0strike00"]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="PackedScene" path="res://assets/models/chair_opt.glb" id="2_chair"]
@@ -10,21 +10,52 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.96, 0.65, 0.14, 0.22)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_size = 28
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 30
+content_margin_left = 20.0
+content_margin_top = 18.0
+content_margin_right = 20.0
+content_margin_bottom = 18.0
 
 [sub_resource type="StyleBoxFlat" id="Btn"]
 bg_color = Color(0.11, 0.125, 0.155, 1)
 border_width_left = 1
 border_width_bottom = 2
-border_color = Color(0.96, 0.65, 0.14, 0.55)
+border_color = Color(0.96, 0.65, 0.14, 0.5)
 corner_radius_top_left = 2
-expand_margin_left = 12.0
-expand_margin_right = 12.0
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+content_margin_left = 16.0
+content_margin_top = 11.0
+content_margin_right = 16.0
+content_margin_bottom = 11.0
+
+[sub_resource type="StyleBoxFlat" id="BtnHover"]
+bg_color = Color(0.19, 0.2, 0.23, 1)
+border_width_left = 2
+border_width_bottom = 2
+border_color = Color(0.96, 0.65, 0.14, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+content_margin_left = 16.0
+content_margin_top = 11.0
+content_margin_right = 16.0
+content_margin_bottom = 11.0
+
+[sub_resource type="Environment" id="BackdropEnv"]
+background_mode = 1
+background_color = Color(0.043, 0.051, 0.067, 1)
+tonemap_mode = 3
+ambient_light_source = 3
+ambient_light_color = Color(0.5, 0.54, 0.62, 1)
+ambient_light_energy = 0.7
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -33,6 +64,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_menu")
 
 [node name="Backdrop" type="ColorRect" parent="."]
@@ -40,6 +72,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0.031, 0.035, 0.047, 1)
 
@@ -48,10 +82,46 @@ color = Color(0.031, 0.035, 0.047, 1)
 [node name="Viewport" type="SubViewport" parent="Backdrop/World"]
 size = Vector2i(1280, 720)
 transparent_bg = false
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="ViewportBox" type="SubViewportContainer" parent="Backdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+viewport = NodePath("../World/Viewport")
+
+[node name="Env" type="WorldEnvironment" parent="Backdrop/World/Viewport"]
+environment = SubResource("BackdropEnv")
+
+[node name="Sun" type="DirectionalLight3D" parent="Backdrop/World/Viewport"]
+transform = Transform3D(0.9, 0, 0.43, 0.3, 0.7, -0.64, -0.43, 0.7, 0.56, 0, 6, 2)
+light_energy = 1.35
+shadow_enabled = false
+
+[node name="Key" type="OmniLight3D" parent="Backdrop/World/Viewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 2.1, 2.4)
+light_color = Color(1, 0.83, 0.6, 1)
+light_energy = 3.2
+omni_range = 9.0
+shadow_enabled = false
+
+[node name="Fill" type="OmniLight3D" parent="Backdrop/World/Viewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 1.8, -1.8)
+light_color = Color(0.55, 0.66, 0.9, 1)
+light_energy = 1.6
+omni_range = 8.0
+shadow_enabled = false
 
 [node name="Cam" type="Camera3D" parent="Backdrop/World/Viewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 4)
-current = false
+current = true
+far = 60.0
 
 [node name="Prop" parent="Backdrop/World/Viewport" instance=ExtResource("2_chair")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
@@ -61,85 +131,133 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0.02, 0.024, 0.035, 0.62)
+color = Color(0.02, 0.024, 0.035, 0.66)
 
 [node name="Vignette" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 0.28)
+color = Color(0, 0, 0, 0.24)
 
 [node name="Brand" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = -300.0
-offset_right = -64.0
-offset_bottom = -232.0
-grow_vertical = 0
+anchors_preset = 0
+offset_left = 72.0
+offset_top = 64.0
+offset_right = 632.0
+offset_bottom = 264.0
+theme_override_constants/separation = 6
+
+[node name="Kicker" type="Label" parent="Brand"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.65, 0.14, 1)
+theme_override_font_sizes/font_size = 13
+text = "5v5 · TACTICAL SHOOTER"
 
 [node name="Title" type="Label" parent="Brand"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 44
-text = "STRIKE PROTOCOL"
+theme_override_font_sizes/font_size = 62
+text = "STRIKE
+PROTOCOL"
 
 [node name="Accent" type="ColorRect" parent="Brand"]
-custom_minimum_size = Vector2(120, 3)
+custom_minimum_size = Vector2(140, 4)
 layout_mode = 2
 color = Color(0.96, 0.65, 0.14, 1)
 
 [node name="Sub" type="Label" parent="Brand"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.62, 0.66, 0.72, 1)
-theme_override_font_sizes/font_size = 13
-text = "competitive 5v5 · godot 4.7 forward+ / sdfgi"
+theme_override_font_sizes/font_size = 14
+text = "Godot 4.7 · Forward+ / SDFGI · свой баллистический слой"
 
-[node name="Menu" type="VBoxContainer" parent="."]
+[node name="MenuPanel" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 4
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = -200.0
-offset_right = -420.0
-offset_bottom = -64.0
-theme_override_constants/separation = 8
+offset_left = -404.0
+offset_top = 168.0
+offset_right = -72.0
+offset_bottom = 620.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("Panel")
 
-[node name="Quick" type="Button" parent="Menu"]
+[node name="Menu" type="VBoxContainer" parent="MenuPanel"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="Caption" type="Label" parent="MenuPanel/Menu"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.6, 0.68, 1)
+theme_override_font_sizes/font_size = 12
+text = "ГЛАВНОЕ МЕНЮ"
+
+[node name="Quick" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("Btn")
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
 theme_override_font_sizes/font_size = 17
 text = "БЫСТРАЯ ИГРА"
 
-[node name="Server" type="Button" parent="Menu"]
+[node name="Bench" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("Btn")
-theme_override_font_sizes/font_size = 17
-text = "ПОДКЛЮЧИТЬСЯ К СЕРВЕРУ"
-
-[node name="Bench" type="Button" parent="Menu"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("Btn")
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
 theme_override_font_sizes/font_size = 17
 text = "ТРЕНИРОВКА (BENCH)"
 
-[node name="Options" type="Button" parent="Menu"]
+[node name="Server" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("Btn")
-theme_override_font_sizes/font_size = 17
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
+theme_override_font_sizes/font_size = 15
+text = "ПОДКЛЮЧИТЬСЯ К СЕРВЕРУ"
+
+[node name="Options" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
+theme_override_font_sizes/font_size = 15
 text = "НАСТРОЙКИ"
 
-[node name="Quit" type="Button" parent="Menu"]
+[node name="GfxMode" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("Btn")
-theme_override_font_sizes/font_size = 17
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
+theme_override_font_sizes/font_size = 15
+text = "ГРАФИКА: ВЫСОКАЯ"
+
+[node name="Quit" type="Button" parent="MenuPanel/Menu"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_styles/hover = SubResource("BtnHover")
+theme_override_styles/pressed = SubResource("BtnHover")
+theme_override_styles/focus = SubResource("BtnHover")
+theme_override_font_sizes/font_size = 15
 text = "ВЫХОД"
 
 [node name="JoinPanel" type="PanelContainer" parent="."]
@@ -150,10 +268,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -110.0
-offset_right = 210.0
-offset_bottom = 110.0
+offset_left = -230.0
+offset_top = -160.0
+offset_right = 230.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Panel")
@@ -164,11 +282,12 @@ theme_override_constants/separation = 10
 
 [node name="JoinTitle" type="Label" parent="JoinPanel/JoinBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "ПОДКЛЮЧЕНИЕ"
 
 [node name="Addr" type="LineEdit" parent="JoinPanel/JoinBox"]
 layout_mode = 2
-placeholder_text = "192.168.1.50"
+placeholder_text = "адрес сервера, напр. 192.168.1.50"
 
 [node name="Port" type="LineEdit" parent="JoinPanel/JoinBox"]
 layout_mode = 2
@@ -181,6 +300,7 @@ placeholder_text = "ник"
 
 [node name="JoinRow" type="HBoxContainer" parent="JoinPanel/JoinBox"]
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="DoJoin" type="Button" parent="JoinPanel/JoinBox/JoinRow"]
 layout_mode = 2
@@ -194,6 +314,20 @@ text = "ПОДНЯТЬ СЕРВЕР"
 layout_mode = 2
 text = "ОТМЕНА"
 
+[node name="Hint" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 72.0
+offset_top = -68.0
+offset_right = 900.0
+offset_bottom = -36.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.55, 0.63, 1)
+theme_override_font_sizes/font_size = 13
+text = "WASD — движение · ЛКМ — огонь · R — перезарядка · SHIFT — присед · ESC — меню · F3 — статистика"
+
 [node name="Status" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 3
@@ -201,12 +335,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -420.0
-offset_top = -60.0
-offset_right = -64.0
-offset_bottom = -32.0
+offset_left = -620.0
+offset_top = -68.0
+offset_right = -72.0
+offset_bottom = -36.0
 grow_horizontal = 0
 grow_vertical = 0
+horizontal_alignment = 2
 theme_override_colors/font_color = Color(0.55, 0.6, 0.68, 1)
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 13
 text = "v0.1 · 43 SFX · баллистика 27/27 · движение 22/22"

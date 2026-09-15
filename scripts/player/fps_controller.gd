@@ -56,6 +56,7 @@ var _bob_amount := 0.0
 var _yaw := 0.0
 var _pitch := 0.0
 var _pitch_limit := deg_to_rad(88.0)
+var _no_floor_time := 0.0
 var _mouse_dx := 0.0
 var _mouse_dy := 0.0
 var _last_motion_rel := Vector2.INF
@@ -173,6 +174,7 @@ func _physics_process(delta: float) -> void:
 	if head:
 		head.position.y = lerpf(head.position.y, _eye_height(), 1.0 - exp(-16.0 * delta)) \
 			+ MovementRules.bob_offset(_bob_phase, _bob_amount)
+	_guard_above_floor(delta)
 
 
 func _tick_footsteps(delta: float, cap: float) -> void:
@@ -250,3 +252,29 @@ func add_recoil(pitch_deg: float, yaw_deg: float) -> void:
 func jitter_spread_rad(base_deg: float, shots: int, speed: float) -> float:
 	return Ballistics.spread_rad(base_deg, speed, max_speed * 100.0, not is_on_floor(),
 		crouching, shots, 0.35)
+
+
+func _guard_above_floor(_dt: float) -> void:
+	## Страховка от «экрана нет»: если глаза оказались внутри/под полом — камера
+	## видит только заднюю грань полигонов, то есть чёрный кадр. Поднимаем голову на
+	## гарантированные 0.9 м над поверхностью; если под ногами вообще ничего нет
+	## (провалился под карту) — возвращаем тело на спавн.
+	var from := global_position + Vector3.UP * 1.2
+	var to := global_position + Vector3.DOWN * 4.0
+	var q := PhysicsRayQueryParameters3D.create(from, to, collision_mask, [get_rid()])
+	var hit := get_world_3d().direct_space_state.intersect_ray(q)
+	if hit.is_empty():
+		_no_floor_time += _dt
+		if _no_floor_time > 1.0 and not spawn_path.is_empty():
+			var m := get_node_or_null(spawn_path) as Node3D
+			if m != null:
+				global_position = m.global_position + Vector3.UP * 1.0
+				velocity = Vector3.ZERO
+				push_warning("FPSController: игрока унесло под карту — возвращаю на спавн")
+			_no_floor_time = 0.0
+		return
+	_no_floor_time = 0.0
+	var floor_top: float = (hit["position"] as Vector3).y
+	var eye_world := (head.global_position.y if head else global_position.y + _eye_height())
+	if eye_world < floor_top + 0.9 and head:
+		head.position.y = floor_top + 0.9 - global_position.y
