@@ -113,7 +113,7 @@ func _try_shoot() -> void:
 	shot_index += 1
 	bloom_shots += 1
 
-	_sfx("res://assets/audio/fx/guns_%s.mp3" % data.id, "Weapons", -2.0)
+	_sfx("res://assets/audio/fx/guns_%s.mp3" % String(audio_id()), "Weapons", -2.0)
 
 	var speed := 0.0
 	if player_body:
@@ -142,6 +142,11 @@ func _try_shoot() -> void:
 	if player_body and player_body.has_method("add_recoil"):
 		player_body.add_recoil(step.y, step.x)
 	ammo_changed.emit(mag, reserve)
+
+
+func audio_id() -> StringName:
+	## m4a1s стреляет семплом guns_m4a1 — расширение оружия и имя файла звука разные.
+	return data.sound_id if data.sound_id != &"" else data.id
 
 
 func _sfx(path: String, bus := "Weapons", vol := 0.0) -> void:

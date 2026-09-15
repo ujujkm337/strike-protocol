@@ -24,7 +24,14 @@ func host(port: int = DEFAULT_PORT, max_players: int = 16) -> Error:
 	_peer.set_transfer_mode(ENetMultiplayerPeer.TRANSFER_MODE_RELIABLE)
 	multiplayer.multiplayer_peer = _peer
 	is_server = true
-	for c in _peer.get_host(): pass
+	# было: `for c in _peer.get_host(): pass`. get_host() СУЩЕСТВУЕТ (я это
+	# сначала отрицал — неверно): он отдаёт ENetConnection, а до create_server —
+	# null с `Condition "!_is_active()"`. По нему нельзя итерироваться:
+	#   SCRIPT ERROR: Unable to iterate on object of type 'Object'.
+	# Ошибка обрывала host() ровно перед server_started.emit(), поэтому кнопка
+	# «Хост» в меню молчала. Мёртвый цикл убран, список пиров берём у API ниже.
+	# на этом моменте пиров ещё нет физически — подключение придёт сигналом ниже,
+	# поэтому «синхронизировать список» тут нечего (раньше тут был мёртвый цикл).
 	server_started.emit(port, max_players)
 	multiplayer.peer_connected.connect(_on_connected)
 	multiplayer.peer_disconnected.connect(_on_disconnected)

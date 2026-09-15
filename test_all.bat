@@ -10,7 +10,7 @@ if not defined GODOT (
 if not defined GODOT ( echo Godot не найден - сначала setup.bat & exit /b 1 )
 
 set "FAIL=0"
-for %%t in (ballistics movement bench assets play_session menu_runtime) do (
+for %%t in (ballistics movement bench assets play_session menu_runtime audio_refs net_stub) do (
   echo.
   echo --- test_%%t ---
   "%GODOT%" --headless --path . -s "tests\test_%%t.gd" >"%TEMP%\gt_%%t.log" 2>&1

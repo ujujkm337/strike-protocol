@@ -63,7 +63,13 @@ var _last_motion_rel := Vector2.INF
 var _last_motion_pos := Vector2.INF
 
 
+var _audio: Node = null
+
+
 func _ready() -> void:
+	_audio = get_node_or_null("/root/AudioBus")
+	if _audio and not footstep.is_connected(_on_footstep_sfx):
+		footstep.connect(_on_footstep_sfx)
 	# Порядок важен: сначала мышь. Если camera == null (карта без Head/Camera),
 	# падение на первой строке лишало бы игрока и захвата мыши, и current-камеры.
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -175,6 +181,13 @@ func _physics_process(delta: float) -> void:
 		head.position.y = lerpf(head.position.y, _eye_height(), 1.0 - exp(-16.0 * delta)) \
 			+ MovementRules.bob_offset(_bob_phase, _bob_amount)
 	_guard_above_floor(delta)
+
+
+func _on_footstep_sfx(surface: String, is_left: bool) -> void:
+	## Присед — почти бесшумно (как в CS), прыжок/падение — громче.
+	if _audio and _audio.has_method("footsteps"):
+		# присед — почти бесшумно (как в CS)
+		_audio.footsteps(surface, is_left, -14.0 if crouching else 0.0)
 
 
 func _tick_footsteps(delta: float, cap: float) -> void:

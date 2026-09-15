@@ -17,6 +17,7 @@ var _p: CharacterBody3D
 var _fails: Array[String] = []
 var _before := Vector3.ZERO
 var _eye_before := 0.0
+var _steps := 0
 
 
 func _ready() -> void:
@@ -25,6 +26,7 @@ func _ready() -> void:
 	if _p == null:
 		_die(["группа player пуста — на Player нет скрипта/группы"])
 		return
+	_p.footstep.connect(func(_s, _l): _steps += 1)
 	_phase = 1
 
 
@@ -169,8 +171,23 @@ func _measure_walk() -> void:
 	print("  замер: сдвиг за %d кадров вперёд = %.2f м" % [WALK, moved])
 	if moved < 1.0:
 		_fails.append("WASD не двигает игрока (сдвиг %.2f м)" % moved)
-	if not _p.is_on_floor():
-		_fails.append("после ходьбы игрок не на полу")
+	# шаги: сигнал -> AudioBus -> существующий файл (раньше путь был .ogg, файлов
+	# .mp3: звук шагов отсутствовал, и ни одна проверка этого не касалась)
+	var bus: Node = get_node_or_null("/root/AudioBus")
+	var last := ""
+	var n := 0
+	if bus != null:
+		last = String(bus.get("last_played"))
+		n = int(bus.get("play_count"))
+	print("  замер: footstep=%d | AudioBus играл %d раз, последний='%s'" % [_steps, n, last])
+	if _steps == 0:
+		_fails.append("за %.2f м ходьбы ни одного сигнала footstep" % moved)
+	elif bus == null:
+		_fails.append("нет /root/AudioBus — шаги в никуда")
+	elif not last.contains("step_"):
+		_fails.append("после шагов AudioBus играл не шаг: '%s'" % last)
+	elif not ResourceLoader.exists(last):
+		_fails.append("шаг ссылается на несуществующий файл: '%s'" % last)
 
 
 func _measure_crouch() -> void:

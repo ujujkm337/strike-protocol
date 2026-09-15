@@ -9,6 +9,9 @@ extends Resource
 @export var category: Category = Category.RIFLE
 @export var model_scene: PackedScene
 @export var muzzle_marker: NodePath = ^"Muzzle"
+## Имя сэмпла в assets/audio/fx/guns_<sound_id>.mp3, если оно не равно id.
+## Пусто = совпадает с id.
+@export var sound_id: StringName = &""
 
 enum Category { RIFLE, SMG, PISTOL, SNIPER, SHOTGUN, KNIFE }
 
@@ -57,7 +60,7 @@ static func make_ak47() -> WeaponData:
 
 static func make_m4a1s() -> WeaponData:
 	var w := WeaponData.new()
-	w.id = &"m4a1s"; w.display_name = "M4A1-S"; w.damage = 33.0
+	w.id = &"m4a1s"; w.sound_id = &"m4a1"; w.display_name = "M4A1-S"; w.damage = 33.0
 	w.rpm = 666.0; w.mag_size = 20; w.reserve_ammo = 80; w.reload_time = 3.1
 	w.base_spread_deg = 0.45; w.armor_penetration = 0.4; w.price = 2900
 	w.ads_spread_mult = 0.45; w.ads_zoom = 1.5
