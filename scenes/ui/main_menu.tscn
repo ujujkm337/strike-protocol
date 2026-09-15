@@ -1,0 +1,212 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmenu0strike00"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" path="res://assets/models/chair_opt.glb" id="2_chair"]
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.063, 0.082, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.96, 0.65, 0.14, 0.22)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 28
+
+[sub_resource type="StyleBoxFlat" id="Btn"]
+bg_color = Color(0.11, 0.125, 0.155, 1)
+border_width_left = 1
+border_width_bottom = 2
+border_color = Color(0.96, 0.65, 0.14, 0.55)
+corner_radius_top_left = 2
+expand_margin_left = 12.0
+expand_margin_right = 12.0
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.031, 0.035, 0.047, 1)
+
+[node name="World" type="Node3D" parent="Backdrop"]
+
+[node name="Viewport" type="SubViewport" parent="Backdrop/World"]
+size = Vector2i(1280, 720)
+transparent_bg = false
+
+[node name="Cam" type="Camera3D" parent="Backdrop/World/Viewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 4)
+current = false
+
+[node name="Prop" parent="Backdrop/World/Viewport" instance=ExtResource("2_chair")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.02, 0.024, 0.035, 0.62)
+
+[node name="Vignette" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="Brand" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -300.0
+offset_right = -64.0
+offset_bottom = -232.0
+grow_vertical = 0
+
+[node name="Title" type="Label" parent="Brand"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "STRIKE PROTOCOL"
+
+[node name="Accent" type="ColorRect" parent="Brand"]
+custom_minimum_size = Vector2(120, 3)
+layout_mode = 2
+color = Color(0.96, 0.65, 0.14, 1)
+
+[node name="Sub" type="Label" parent="Brand"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "competitive 5v5 · godot 4.7 forward+ / sdfgi"
+
+[node name="Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -200.0
+offset_right = -420.0
+offset_bottom = -64.0
+theme_override_constants/separation = 8
+
+[node name="Quick" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_font_sizes/font_size = 17
+text = "БЫСТРАЯ ИГРА"
+
+[node name="Server" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_font_sizes/font_size = 17
+text = "ПОДКЛЮЧИТЬСЯ К СЕРВЕРУ"
+
+[node name="Bench" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_font_sizes/font_size = 17
+text = "ТРЕНИРОВКА (BENCH)"
+
+[node name="Options" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_font_sizes/font_size = 17
+text = "НАСТРОЙКИ"
+
+[node name="Quit" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("Btn")
+theme_override_font_sizes/font_size = 17
+text = "ВЫХОД"
+
+[node name="JoinPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -110.0
+offset_right = 210.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Panel")
+
+[node name="JoinBox" type="VBoxContainer" parent="JoinPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="JoinTitle" type="Label" parent="JoinPanel/JoinBox"]
+layout_mode = 2
+text = "ПОДКЛЮЧЕНИЕ"
+
+[node name="Addr" type="LineEdit" parent="JoinPanel/JoinBox"]
+layout_mode = 2
+placeholder_text = "192.168.1.50"
+
+[node name="Port" type="LineEdit" parent="JoinPanel/JoinBox"]
+layout_mode = 2
+text = "7777"
+placeholder_text = "порт"
+
+[node name="Nick" type="LineEdit" parent="JoinPanel/JoinBox"]
+layout_mode = 2
+placeholder_text = "ник"
+
+[node name="JoinRow" type="HBoxContainer" parent="JoinPanel/JoinBox"]
+layout_mode = 2
+
+[node name="DoJoin" type="Button" parent="JoinPanel/JoinBox/JoinRow"]
+layout_mode = 2
+text = "ВОЙТИ"
+
+[node name="DoHost" type="Button" parent="JoinPanel/JoinBox/JoinRow"]
+layout_mode = 2
+text = "ПОДНЯТЬ СЕРВЕР"
+
+[node name="JoinCancel" type="Button" parent="JoinPanel/JoinBox/JoinRow"]
+layout_mode = 2
+text = "ОТМЕНА"
+
+[node name="Status" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -60.0
+offset_right = -64.0
+offset_bottom = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.55, 0.6, 0.68, 1)
+theme_override_font_sizes/font_size = 12
+text = "v0.1 · 43 SFX · баллистика 27/27 · движение 22/22"

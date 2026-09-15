@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.078, 0.098, 0.141, 1)
+sky_horizon_color = Color(0.235, 0.196, 0.18, 1)
+ground_bottom_color = Color(0.02, 0.023, 0.031, 1)
+ground_horizon_color = Color(0.184, 0.153, 0.137, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+sky_max_layers = 2
+tonemap_mode = 3
+adjustment_enabled = true
+adjustment_contrast = 1.06
+adjustment_saturation = 1.02
+adjustment_white = 1.0
+glow_enabled = true
+glow_intensity = 0.55
+glow_bloom = 0.12
+glow_blend_mode = 1
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.03
+volumetric_fog_albedo = Color(0.62, 0.68, 0.78, 1)
+volumetric_fog_emissive = Color(0.04, 0.05, 0.06, 1)
+sdfgi_enabled = true
+sdfgi_cascades = 4
+sdfgi_min_cell_size = 0.125
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = true
+sdfgi_energy = 1.15
+ambient_light_source = 3
+ambient_light_color = Color(0.32, 0.35, 0.42, 1)
+ssr_enabled = true
+ssr_max_steps = 128
+ssr_fade_out = 0.3
+ssr_depth_tolerance = 0.3
+auto_exposure_enabled = true
+auto_exposure_scale = 0.35
+auto_exposure_min_sensitivity = -6.0
+auto_exposure_max_sensitivity = 4.0
+fsr_sharpness = 0.3
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Env")

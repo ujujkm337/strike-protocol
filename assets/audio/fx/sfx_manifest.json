@@ -1,0 +1,174 @@
+{
+  "step_concrete_l": {
+    "prompt": "single heavy combat boot step on dusty concrete floor, dry short impact, close mic, no reverb",
+    "duration": 0.5
+  },
+  "step_concrete_r": {
+    "prompt": "single heavy boot step on concrete, slightly different scuff texture, dry, no reverb",
+    "duration": 0.5
+  },
+  "step_metal_l": {
+    "prompt": "boot stepping on hollow metal grating, metallic clang, short, dry",
+    "duration": 0.5
+  },
+  "step_metal_r": {
+    "prompt": "boot on metal grate, brief squeal and clank, short, dry",
+    "duration": 0.5
+  },
+  "step_gravel": {
+    "prompt": "footstep crunching on gravel and small stones, short dry impact",
+    "duration": 0.5
+  },
+  "step_sand": {
+    "prompt": "footstep into soft sand or dust, muffled powdery crunch",
+    "duration": 0.5
+  },
+  "jump_takeoff": {
+    "prompt": "cloth and boot rustle, quick crouch jump takeoff effort sound",
+    "duration": 0.6
+  },
+  "land_heavy": {
+    "prompt": "heavy boot landing on concrete, thud with slight dust, cloth rustle",
+    "duration": 0.6
+  },
+  "guns_ak47": {
+    "prompt": "loud sharp AK-47 assault rifle single shot, 7.62 caliber, tight indoor concrete room slap, pistol crack",
+    "duration": 1.4
+  },
+  "guns_m4a1": {
+    "prompt": "M4A1 rifle single shot with sound suppressor, quiet muffled thump, high tech, short",
+    "duration": 1.2
+  },
+  "guns_deagle": {
+    "prompt": "desert eagle .50 pistol shot, extremely loud boom, deep report, short tail",
+    "duration": 1.4
+  },
+  "guns_awp": {
+    "prompt": "heavy sniper rifle bolt action shot, massive sharp crack with distant echo tail",
+    "duration": 1.8
+  },
+  "guns_scout": {
+    "prompt": "lightweight bolt action sniper rifle shot, clean sharp crack",
+    "duration": 1.5
+  },
+  "guns_ump": {
+    "prompt": "compact SMG single shot, punchy dry crack, light",
+    "duration": 1.1
+  },
+  "reload_magin": {
+    "prompt": "metal rifle magazine being pulled out of weapon, sharp metallic click",
+    "duration": 0.7
+  },
+  "reload_magout": {
+    "prompt": "rifle magazine slammed into well, solid metallic clunk",
+    "duration": 0.7
+  },
+  "reload_bolt": {
+    "prompt": "AK rifle charging handle pulled and released, metallic bolt clack with spring",
+    "duration": 0.8
+  },
+  "reload_pistol": {
+    "prompt": "pistol slide racked back and forward, metallic clack",
+    "duration": 0.7
+  },
+  "empty_click": {
+    "prompt": "dry firing click on empty rifle chamber, small sharp metallic snap",
+    "duration": 0.5
+  },
+  "switch": {
+    "prompt": "weapon swap whoosh with light gear rustle and equipment clink",
+    "duration": 0.6
+  },
+  "hit_flesh": {
+    "prompt": "single muffled dull impact of a bullet hitting body armor, wet thud",
+    "duration": 0.6
+  },
+  "hit_helmet": {
+    "prompt": "bullet striking a metal helmet, sharp high pitched metallic ping",
+    "duration": 0.6
+  },
+  "hit_wall": {
+    "prompt": "bullet impact on concrete wall, sharp crack and small debris sprinkle",
+    "duration": 0.7
+  },
+  "hit_metal": {
+    "prompt": "bullet ricochet off thin metal sheet, bright zing with ring",
+    "duration": 0.7
+  },
+  "hit_glass": {
+    "prompt": "rifle bullet shattering a glass window, sharp break and falling shards",
+    "duration": 0.9
+  },
+  "kill_confirm": {
+    "prompt": "heavy body collapse to concrete floor, muffled thud and gear clatter",
+    "duration": 0.9
+  },
+  "bomb_plant": {
+    "prompt": "electronic bomb timer beeping twice, keypad typing click, tactical",
+    "duration": 1.4
+  },
+  "bomb_defuse": {
+    "prompt": "wire snipped, small click then digital confirmation beep",
+    "duration": 1.3
+  },
+  "bomb_explode": {
+    "prompt": "powerful C4 plastic explosion, deep boom with concrete debris and dust",
+    "duration": 2.2
+  },
+  "grenade_pin": {
+    "prompt": "pulling a metal pin out of a hand grenade, sharp metallic ting with ring",
+    "duration": 0.7
+  },
+  "nade_bounce": {
+    "prompt": "metal grenade bouncing off concrete floor, hollow clank roll",
+    "duration": 0.7
+  },
+  "flash_pop": {
+    "prompt": "flashbang detonation, loud pop then high ringing tinnitus tone",
+    "duration": 2.0
+  },
+  "smoke_ignite": {
+    "prompt": "smoke grenade canister igniting, hiss of pressurized gas and powder burn",
+    "duration": 1.5
+  },
+  "he_explode": {
+    "prompt": "fragmentation grenade explosion, sharp blast with distant echo and rubble",
+    "duration": 2.2
+  },
+  "round_start": {
+    "prompt": "short metallic bomb whistle blast, sharp and loud, round start signal",
+    "duration": 0.8
+  },
+  "ambient_dust": {
+    "prompt": "desert wind blowing through abandoned concrete structures, distant sand hiss, no music",
+    "duration": 5.0
+  },
+  "menu_bed": {
+    "prompt": "dark minimal cinematic low drone with soft texture, no melody, quiet, looping ambient bed for a game menu",
+    "duration": 8.0
+  },
+  "ui_hover": {
+    "prompt": "very soft short UI hover tick, subtle, digital",
+    "duration": 0.5
+  },
+  "ui_click": {
+    "prompt": "clean modern UI button click, short digital pop, subtle",
+    "duration": 0.5
+  },
+  "ui_back": {
+    "prompt": "soft low UI back click, digital, short",
+    "duration": 0.5
+  },
+  "ui_slider": {
+    "prompt": "small UI slider tick sound, one click, digital and tight",
+    "duration": 0.5
+  },
+  "ui_error": {
+    "prompt": "low short negative UI error blip, muted",
+    "duration": 0.55
+  },
+  "ui_confirm": {
+    "prompt": "crisp affirmative UI confirmation blip, short and bright",
+    "duration": 0.55
+  }
+}
